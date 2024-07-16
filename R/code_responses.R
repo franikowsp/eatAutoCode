@@ -8,7 +8,7 @@
 #'
 #' @examples
 code_responses <- function(coding_scheme, responses) {
-  eatResponses$call("codeResponses",
-                    list(codingScheme = coding_scheme,
-                         responses = responses))
+  eatAutoCode$call("codeResponses",
+                   list(codingScheme = coding_scheme,
+                        responses = responses))
 }

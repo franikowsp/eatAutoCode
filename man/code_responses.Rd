@@ -7,9 +7,12 @@
 code_responses(coding_scheme, responses)
 }
 \arguments{
-\item{responses}{List. Unit responses from IQB Testcenter.}
+\item{coding_scheme}{List. Coding scheme of a unit from IQB Studio Lite.}
 
-\item{coding_schema}{List. Coding scheme of a unit from IQB Studio Lite.}
+\item{responses}{List. Unit responses from IQB Testcenter.}
+}
+\value{
+A list.
 }
 \description{
 Automatically code responses with coding scheme

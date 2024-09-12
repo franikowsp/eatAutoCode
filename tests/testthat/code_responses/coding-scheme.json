@@ -37,9 +37,7 @@
       "score": 1,
       "sourceType": "BASE",
       "sourceParameters": {
-        "processing": [
-          "TAKE_EMPTY_AS_VALID"
-        ]
+        "processing": ["TAKE_EMPTY_AS_VALID"]
       },
       "codes": [
         {

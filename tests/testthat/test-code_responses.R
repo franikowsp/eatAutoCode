@@ -19,7 +19,10 @@ test_that("correctly scores examplary data from list object", {
 })
 
 test_that("correctly scores examplary data from JSON string", {
-  test_resp <- readr::read_file(test_path("code_responses/responses.txt"))
+  test_resp <- readr::read_file(test_path("code_responses/responses.txt")) %>%
+    jsonlite::parse_json() %>%
+    purrr::keep(function(x) x$id == "elementCodes") %>%
+    purrr::pluck(1, "content")
 
   comp <- data.frame(
     id = c("b1", "b2", "b3"),

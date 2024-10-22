@@ -14,6 +14,8 @@ Imports:
     cli,
     jsonlite,
     magrittr,
+    readr,
+    purrr,
     V8
 Suggests: 
     testthat (>= 3.0.0)

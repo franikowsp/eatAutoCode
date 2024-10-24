@@ -3,7 +3,7 @@
 #' @param coding_scheme List. Coding scheme of a unit from IQB Studio Lite.
 #' @param responses List. Unit responses from IQB Testcenter.
 #'
-#' @return A list.
+#' @return A data frame.
 #' @export
 code_responses <- function(coding_scheme, responses) {
   eatAutoCode$call("codeResponses",

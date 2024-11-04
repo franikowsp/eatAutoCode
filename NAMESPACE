@@ -2,4 +2,5 @@
 
 export("%>%")
 export(code_responses)
+export(get_dependency_tree)
 importFrom(magrittr,"%>%")

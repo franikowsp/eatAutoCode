@@ -12,7 +12,7 @@ code_responses(coding_scheme, responses)
 \item{responses}{List. Unit responses from IQB Testcenter.}
 }
 \value{
-A list.
+A data frame.
 }
 \description{
 Automatically code responses with coding scheme

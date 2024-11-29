@@ -3,6 +3,7 @@
 .Rdata
 .httr-oauth
 .DS_Store
+node_modules
 
 # Test
 test.R

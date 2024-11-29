@@ -35,8 +35,9 @@ Second, the auto coder needs to be updated:
 packer::npm_install("@iqb/responses")
 ```
 
-That’s it. To be sure that everything still works, please load everything (`devtools::load_all(".")`) run the tests (`devtools::test()`)
-before pulling.
+That’s it. To be sure that everything still works, please load the
+package (`devtools::load_all(".")`) and run all of the tests
+(`devtools::test()`) before pulling.
 
 <!-- ## Example -->
 <!-- This is a basic example which shows you how to solve a common problem: -->

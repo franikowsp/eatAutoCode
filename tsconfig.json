@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "*": ["node_modules/*"]
+    },
+    "outDir": "./inst",
+    "noImplicitAny": false,
+    "module": "es6",
+    "target": "es5"
+  }
+}

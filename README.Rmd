@@ -33,7 +33,7 @@ devtools::install_github("franikowsp/eatAutoCode")
 
 If you cloned the repository and want to update the version of the auto coder, follow this guide.
 
-First, all package need to be installed:
+First, all packages need to be installed:
 
 ```r
 packer::npm_install()

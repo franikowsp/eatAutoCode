@@ -16,6 +16,8 @@ Imports:
     jsonlite,
     magrittr,
     readr,
+    tibble,
+    tidyr,
     purrr,
     V8
 Suggests: 

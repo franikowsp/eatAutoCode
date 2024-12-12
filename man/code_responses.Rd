@@ -4,12 +4,14 @@
 \alias{code_responses}
 \title{Automatically code responses with coding scheme}
 \usage{
-code_responses(coding_scheme, responses)
+code_responses(coding_scheme, responses, manual = "null")
 }
 \arguments{
-\item{coding_scheme}{List. Coding scheme of a unit from IQB Studio Lite.}
+\item{coding_scheme}{List or character. Coding scheme of a unit from IQB Studio Lite.}
 
-\item{responses}{List. Unit responses from IQB Testcenter.}
+\item{responses}{List or character. Unit responses from IQB Testcenter.}
+
+\item{manual}{List or character. Manual codes to potentially overwrite response data. Defaults to `"null"` (would be treated in the same way as `NA`).}
 }
 \value{
 A data frame.

@@ -121,6 +121,27 @@ test_that("correctly scores examplary data from list object with manual insertio
   expect_equal(responses_coded, comp_array)
 })
 
+# test_that("correctly scores examplary data from list object with manual insertions", {
+#   test_resp <- NA_character_
+#
+#   test_resp_array <- purrr::map(
+#     1:3,
+#     function(x) list(unit_key = paste0("A", x), responses = test_resp,
+#                      manual = list(list(
+#                        id = "b1",
+#                        status = "CODING_COMPLETE",
+#                        code = -99,
+#                        score = NA
+#                      )))
+#   )
+#
+#   responses_coded <-
+#     code_responses_array(coding_scheme = test_cs,
+#                          responses = test_resp_array)
+#
+#   expect_equal(responses_coded, comp_array)
+# })
+
 # test_that("correctly aggregates missing data", {
 # test_resp <- readr::read_file(test_path("code_responses/responses.txt")) %>%
 #   jsonlite::parse_json() %>%

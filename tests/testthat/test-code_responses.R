@@ -56,6 +56,20 @@ test_that("correctly adds and overwrites manual data", {
   expect_equal(responses_coded, comp)
 })
 
+# test_that("correctly treats missing responses", {
+#   test_resp <- NA_character_
+#
+#   test_code <- list(list(id = "b1", status = "CODING_COMPLETE", code = 31, score = 1),
+#                     list(id = "b2", status = "CODING_COMPLETE", code = -99, score = 0),
+#                     list(id = "b3", status = "CODING_COMPLETE", code = -97, score = NA))
+#
+#   responses_coded <- code_responses(coding_scheme = test_cs,
+#                                     responses = test_resp,
+#                                     manual = test_code)
+#
+#   expect_equal(responses_coded, comp)
+# })
+
 
 # test_that("correctly adds and overwrites manual data stored as JSON", {
 #   test_resp <- readr::read_file(test_path("code_responses/responses.txt")) %>%

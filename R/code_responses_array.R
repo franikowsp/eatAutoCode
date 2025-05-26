@@ -12,5 +12,8 @@ code_responses_array <- function(coding_scheme, responses) {
 
   output %>%
     dplyr::as_tibble() %>%
+    dplyr::mutate(
+      responses = purrr::map(responses, function(x) x %>% dplyr::mutate(dplyr::across("value", as.character)))
+    ) %>%
     tidyr::unnest(responses)
 }

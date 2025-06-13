@@ -3,5 +3,6 @@
 export("%>%")
 export(code_responses)
 export(code_responses_array)
+export(extract_unit_definition)
 export(get_dependency_tree)
 importFrom(magrittr,"%>%")

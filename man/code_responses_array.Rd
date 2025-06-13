@@ -12,7 +12,7 @@ code_responses_array(coding_scheme, responses)
 \item{responses}{List. Unit responses from IQB Testcenter.}
 }
 \value{
-A data frame.
+A data frame. Please not that the value column is coerced to a character, i.e., list entries of `c("a", "b")` are concatenated to `[[a,b]]`.
 }
 \description{
 Automatically code responses with coding scheme

@@ -46,10 +46,34 @@ function collectIdsWithKeyedPaths(
   return collected;
 }
 
+function findDependencies(data) {
+  return data.map((currentObj, _, arr) => {
+    const connectedIds = currentObj.connectedTo || [];
+
+    const dependencies = connectedIds.flatMap((depId) => {
+      return arr
+        .filter(({ id }) => id === depId)
+        .map((match) => ({
+          dependencyId: match.id,
+          dependencyPath: match.path,
+        }));
+    });
+
+    return {
+      id: currentObj.id,
+      ...currentObj.path,
+      alwaysVisible: currentObj.alwaysVisible,
+      dependencies,
+    };
+  });
+}
+
 export const extractUnitDefinition = function (params: {
   unitDefinition: any;
 }): any {
   const { unitDefinition } = params;
 
-  return collectIdsWithKeyedPaths(unitDefinition);
+  const dataParsed = JSON.parse(unitDefinition);
+  const dataIds = collectIdsWithKeyedPaths(dataParsed);
+  return findDependencies(dataIds);
 };

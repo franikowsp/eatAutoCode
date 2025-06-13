@@ -2,23 +2,24 @@ function collectIdsWithKeyedPaths(
   node,
   path = {},
   collected = [],
-  visibility = null
+  visibility = null,
+  skipCollect = false
 ) {
   if (Array.isArray(node)) {
     node.forEach((child, index) => {
-      collectIdsWithKeyedPaths(child, path, collected, visibility);
+      collectIdsWithKeyedPaths(child, path, collected, visibility, skipCollect);
     });
     return collected;
   }
 
   if (typeof node === "object" && node !== null) {
-    // Update visibility if we're at a 'pages' level object
+    // If at a 'page' level object, update visibility
     if ("alwaysVisible" in node && "sections" in node) {
       visibility = node.alwaysVisible;
     }
 
-    // If the object has an 'id', store it with metadata and path
-    if ("id" in node) {
+    // Only collect if not under "value"
+    if ("id" in node && !skipCollect) {
       collected.push({
         id: node.id,
         markingPanels: node.markingPanels,
@@ -28,17 +29,25 @@ function collectIdsWithKeyedPaths(
       });
     }
 
-    // Recursively traverse properties
     for (const key in node) {
       const value = node[key];
 
+      // Update path with current key/index if it's an array
       if (Array.isArray(value)) {
         value.forEach((child, index) => {
           const newPath = { ...path, [key]: index };
-          collectIdsWithKeyedPaths(child, newPath, collected, visibility);
+          const newSkip = skipCollect || key === "value";
+          collectIdsWithKeyedPaths(
+            child,
+            newPath,
+            collected,
+            visibility,
+            newSkip
+          );
         });
       } else if (typeof value === "object" && value !== null) {
-        collectIdsWithKeyedPaths(value, path, collected, visibility);
+        const newSkip = skipCollect || key === "value";
+        collectIdsWithKeyedPaths(value, path, collected, visibility, newSkip);
       }
     }
   }
@@ -54,16 +63,17 @@ function findDependencies(data) {
       return arr
         .filter(({ id }) => id === depId)
         .map((match) => ({
-          dependencyId: match.id,
-          dependencyPath: match.path,
+          variable_dependency_id: match.id,
+          variable_dependency_path: match.path,
+          variable_dependency_page_always_visible: match.alwaysVisible,
         }));
     });
 
     return {
-      id: currentObj.id,
-      ...currentObj.path,
-      alwaysVisible: currentObj.alwaysVisible,
-      dependencies,
+      variable_id: currentObj.id,
+      variable_path: currentObj.path,
+      variable_page_always_visible: currentObj.alwaysVisible,
+      variable_dependencies: dependencies,
     };
   });
 }

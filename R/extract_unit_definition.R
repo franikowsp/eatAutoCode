@@ -1,10 +1,10 @@
-#' Automatically code responses with coding scheme
+#' Extract variable locations from unit definition
 #'
-#' @param unit_definition List or character. Unit definition of a unit from IQB Studio.
+#' @param units Tibble. Must contain a column `definition` that contains unit definitions.
 #'
 #' @return A data frame.
 #' @export
-extract_unit_definition <- function(unit_definition) {
-  eatAutoCode$call("extractUnitDefinition",
-                   list(unitDefinition = unit_definition))
+extract_variable_location <- function(units) {
+  eatAutoCode$call("extractVariableLocation",
+                   list(units = units))
 }

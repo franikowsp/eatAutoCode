@@ -18,7 +18,7 @@ function collectIdsWithKeyedPaths(
       visibility = node.alwaysVisible;
     }
 
-    // Only collect if not under "value"
+    // Only collect if not under a skipped key
     if ("id" in node && !skipCollect) {
       collected.push({
         id: node.id,
@@ -31,23 +31,29 @@ function collectIdsWithKeyedPaths(
 
     for (const key in node) {
       const value = node[key];
+      const shouldSkip =
+        skipCollect || ["value", "visibilityRules"].includes(key);
 
-      // Update path with current key/index if it's an array
       if (Array.isArray(value)) {
         value.forEach((child, index) => {
           const newPath = { ...path, [key]: index };
-          const newSkip = skipCollect || key === "value";
           collectIdsWithKeyedPaths(
             child,
             newPath,
             collected,
             visibility,
-            newSkip
+            shouldSkip
           );
         });
       } else if (typeof value === "object" && value !== null) {
-        const newSkip = skipCollect || key === "value";
-        collectIdsWithKeyedPaths(value, path, collected, visibility, newSkip);
+        const newPath = { ...path, [key]: 0 }; // object branch, no index
+        collectIdsWithKeyedPaths(
+          value,
+          newPath,
+          collected,
+          visibility,
+          shouldSkip
+        );
       }
     }
   }
@@ -63,14 +69,14 @@ function findDependencies(data) {
       return arr
         .filter(({ id }) => id === depId)
         .map((match) => ({
-          variable_dependency_id: match.id,
+          variable_dependency_ref: match.id,
           variable_dependency_path: match.path,
           variable_dependency_page_always_visible: match.alwaysVisible,
         }));
     });
 
     return {
-      variable_id: currentObj.id,
+      variable_ref: currentObj.id,
       variable_path: currentObj.path,
       variable_page_always_visible: currentObj.alwaysVisible,
       variable_dependencies: dependencies,
@@ -78,12 +84,19 @@ function findDependencies(data) {
   });
 }
 
-export const extractUnitDefinition = function (params: {
-  unitDefinition: any;
-}): any {
-  const { unitDefinition } = params;
+export const extractVariableLocation = function (params: { units: any }): any {
+  const { units } = params;
 
-  const dataParsed = JSON.parse(unitDefinition);
-  const dataIds = collectIdsWithKeyedPaths(dataParsed);
-  return findDependencies(dataIds);
+  return units.map((unit) => {
+    const { definition } = unit;
+
+    const definitionParsed = JSON.parse(definition);
+
+    const data = collectIdsWithKeyedPaths(definitionParsed);
+    unit.variable_pages = findDependencies(data);
+
+    delete unit.definition;
+
+    return unit;
+  });
 };

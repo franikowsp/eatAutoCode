@@ -63,7 +63,8 @@ function collectIdsWithKeyedPaths(
 
 function findDependencies(data) {
   return data.map((currentObj, _, arr) => {
-    const connectedIds = currentObj.connectedTo || [];
+    const connectedIds =
+      currentObj.connectedTo || currentObj.markingPanels || [];
 
     const dependencies = connectedIds.flatMap((depId) => {
       return arr

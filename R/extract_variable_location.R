@@ -1,15 +1,10 @@
 #' Extract variable locations from unit definition
 #'
-#' @param units Tibble. Must contain a column `definition` that contains unit definitions.
+#' @param units Tibble. Must contain a column `definition` that contains unit definitions. Please note, that it is recommended to not extract more than 20 unit definitions at a time as the call is memory-consuming.
 #'
 #' @return A data frame.
 #' @export
 extract_variable_location <- function(units) {
-  # Use another AutoCoder instance (this is very memory-consuming)
-  # TODO: Is this still necessary after applying the batching fix?
-  ctx <- V8::v8()
-  ctx$source(system.file("index.js", package = "eatAutoCode"))
-
   output <- eatAutoCode$call("extractVariableLocation",
                              list(units = units))
 

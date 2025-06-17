@@ -29,9 +29,9 @@ export function codeResponses(params: {
   const { codingScheme, responses, manual } = params;
 
   // Parse responses and variableCodings if it's a JSON string
-  // const { variableCodings }: { variableCodings: any } =
-  //   deparseJSON(codingScheme);
-  // const preparedScheme = CodingSchemeFactory(codingScheme.variableCodings);
+  const { variableCodings }: { variableCodings: any } =
+    deparseJSON(codingScheme);
+  // const preparedScheme = deparseJSON(codingScheme);
 
   let responsesToCode: UnitResponses[] = deparseJSON(responses);
   const manualToInsert: ManualCodes[] | null = manual && deparseJSON(manual);
@@ -44,10 +44,7 @@ export function codeResponses(params: {
   }
 
   // Create CodingSchemeFactory instance and code responses
-  const coded = CodingSchemeFactory.code(
-    responsesToCode,
-    codingScheme.variableCodings
-  );
+  const coded = CodingSchemeFactory.code(responsesToCode, variableCodings);
   return coded;
 }
 
@@ -63,9 +60,9 @@ export function codeResponsesArray(params: {
     params;
 
   // Parse responses and variableCodings if it's a JSON string
-  // const { variableCodings }: { variableCodings: any } =
-  //   deparseJSON(codingScheme);
-  // const preparedScheme = new CodingSchemeFactory(variableCodings);
+  const { variableCodings }: { variableCodings: any } =
+    deparseJSON(codingScheme);
+  // const preparedScheme = deparseJSON(codingScheme);
 
   const responsesToCode: UnitsArray[] = deparseJSON(responses);
 
@@ -84,20 +81,19 @@ export function codeResponsesArray(params: {
       // Delete manual entry as it is not necessary anymore
       delete resp.manual;
     }
-    resp.responses = CodingSchemeFactory.code(
-      responses,
-      codingScheme.variableCodings
-    ).map((coded) => {
-      coded.value = concatenateValue({
-        value: coded.value,
-        collapse: collapse,
-        wrapStart: wrapStart,
-        wrapEnd: wrapEnd,
-        missing: missing,
-      });
+    resp.responses = CodingSchemeFactory.code(responses, variableCodings).map(
+      (coded) => {
+        coded.value = concatenateValue({
+          value: coded.value,
+          collapse: collapse,
+          wrapStart: wrapStart,
+          wrapEnd: wrapEnd,
+          missing: missing,
+        });
 
-      return coded;
-    });
+        return coded;
+      }
+    );
 
     return resp;
   });

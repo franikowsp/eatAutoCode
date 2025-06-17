@@ -1,4 +1,4 @@
-import { ResponseStatusType } from "@iqb/responses";
+import { ResponseStatusType } from "@iqbspecs/response/response.interface";
 
 type UnitResponses = {
   id: string;

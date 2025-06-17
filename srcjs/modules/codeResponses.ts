@@ -1,4 +1,5 @@
-import { CodingScheme, ResponseStatusType } from "@iqb/responses";
+import { ResponseStatusType } from "@iqbspecs/response/response.interface";
+import { CodingSchemeFactory } from "@iqb/responses";
 import insertManual from "../helpers/insertManual";
 import deparseJSON from "../helpers/deparseJSON";
 
@@ -27,9 +28,9 @@ export function codeResponses(params: {
   const { codingScheme, responses, manual } = params;
 
   // Parse responses and variableCodings if it's a JSON string
-  const { variableCodings }: { variableCodings: any } =
-    deparseJSON(codingScheme);
-  const preparedScheme = new CodingScheme(variableCodings);
+  // const { variableCodings }: { variableCodings: any } =
+  //   deparseJSON(codingScheme);
+  // const preparedScheme = CodingSchemeFactory(codingScheme.variableCodings);
 
   let responsesToCode: UnitResponses[] = deparseJSON(responses);
   const manualToInsert: ManualCodes[] | null = manual && deparseJSON(manual);
@@ -41,21 +42,27 @@ export function codeResponses(params: {
     });
   }
 
-  // Create CodingScheme instance and code responses
-  const coded = preparedScheme.code(responsesToCode);
+  // Create CodingSchemeFactory instance and code responses
+  const coded = CodingSchemeFactory.code(
+    responsesToCode,
+    codingScheme.variableCodings
+  );
   return coded;
 }
 
 export function codeResponsesArray(params: {
   codingScheme: any;
   responses: UnitsArray[] | string;
+  collapse: string;
+  wrapStart: string;
+  wrapEnd: string;
 }): UnitsArray[] {
-  const { codingScheme, responses } = params;
+  const { codingScheme, responses, collapse, wrapStart, wrapEnd } = params;
 
   // Parse responses and variableCodings if it's a JSON string
-  const { variableCodings }: { variableCodings: any } =
-    deparseJSON(codingScheme);
-  const preparedScheme = new CodingScheme(variableCodings);
+  // const { variableCodings }: { variableCodings: any } =
+  //   deparseJSON(codingScheme);
+  // const preparedScheme = new CodingSchemeFactory(variableCodings);
 
   const responsesToCode: UnitsArray[] = deparseJSON(responses);
 
@@ -74,11 +81,28 @@ export function codeResponsesArray(params: {
       // Delete manual entry as it is not necessary anymore
       delete resp.manual;
     }
-    resp.responses = preparedScheme.code(responses);
+    resp.responses = CodingSchemeFactory.code(
+      responses,
+      codingScheme.variableCodings
+    ).map((coded) => {
+      coded.value =
+        coded.value === null
+          ? "__MISSING__"
+          : ["string", "number", "boolean"].includes(typeof coded.value)
+          ? `${coded.value}`
+          : Array.isArray(coded.value)
+          ? coded.value.length === 0
+            ? "__MISSING__"
+            : coded.value.length > 1
+            ? `${wrapStart}${coded.value.join(collapse)}${wrapEnd}`
+            : `${wrapStart}${coded.value[0]}${wrapEnd}`
+          : `${coded.value}`;
+
+      return coded;
+    });
 
     return resp;
   });
 
   return coded;
-  //   return JSON.stringify(coded);
 }

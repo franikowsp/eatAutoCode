@@ -15,7 +15,10 @@ comp_array <- purrr::map(
 ) %>%
   purrr::list_transpose() %>%
   dplyr::as_tibble() %>%
-  tidyr::unnest(responses)
+  tidyr::unnest(responses) %>%
+  dplyr::mutate(
+    value = ifelse(value == "TRUE", "true", value)
+  )
 
 test_that("correctly scores examplary data from list object", {
   test_resp <- jsonlite::read_json(test_path("code_responses/responses.json"))
@@ -98,7 +101,10 @@ comp_array <- purrr::map(
 ) %>%
   purrr::list_transpose() %>%
   dplyr::as_tibble() %>%
-  tidyr::unnest(responses)
+  tidyr::unnest(responses) %>%
+  dplyr::mutate(
+    value = ifelse(value == "TRUE", "true", value)
+  )
 
 test_that("correctly scores examplary data from list object with manual insertions", {
   test_resp <- jsonlite::read_json(test_path("code_responses/responses.json"))

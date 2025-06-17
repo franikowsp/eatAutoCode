@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "updateVersion": "node srcjs/updateVersion",
     "test": "echo \"Error: no test specified\" && exit 1",
     "none": "webpack --config webpack.dev.js --mode=none",
     "development": "webpack --config webpack.dev.js",
@@ -14,7 +15,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@iqb/responses": "^3.7.0",
+    "@iqb/responses": "^4.0.1",
+    "@iqbspecs/coding-scheme": "^3.2.0",
+    "@iqbspecs/response": "^1.5.0",
+    "@iqbspecs/variable-info": "^1.3.0",
     "ts-loader": "^9.5.1",
     "typescript": "^5.7.2",
     "webpack": "^5.96.1",

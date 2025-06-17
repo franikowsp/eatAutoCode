@@ -2,6 +2,7 @@ import { ResponseStatusType } from "@iqbspecs/response/response.interface";
 import { CodingSchemeFactory } from "@iqb/responses";
 import insertManual from "../helpers/insertManual";
 import deparseJSON from "../helpers/deparseJSON";
+import { concatenateValue } from "../helpers/concatenateValue";
 
 type UnitResponses = {
   id: string;
@@ -56,8 +57,10 @@ export function codeResponsesArray(params: {
   collapse: string;
   wrapStart: string;
   wrapEnd: string;
+  missing: string;
 }): UnitsArray[] {
-  const { codingScheme, responses, collapse, wrapStart, wrapEnd } = params;
+  const { codingScheme, responses, collapse, wrapStart, wrapEnd, missing } =
+    params;
 
   // Parse responses and variableCodings if it's a JSON string
   // const { variableCodings }: { variableCodings: any } =
@@ -85,18 +88,13 @@ export function codeResponsesArray(params: {
       responses,
       codingScheme.variableCodings
     ).map((coded) => {
-      coded.value =
-        coded.value === null
-          ? "__MISSING__"
-          : ["string", "number", "boolean"].includes(typeof coded.value)
-          ? `${coded.value}`
-          : Array.isArray(coded.value)
-          ? coded.value.length === 0
-            ? "__MISSING__"
-            : coded.value.length > 1
-            ? `${wrapStart}${coded.value.join(collapse)}${wrapEnd}`
-            : `${wrapStart}${coded.value[0]}${wrapEnd}`
-          : `${coded.value}`;
+      coded.value = concatenateValue({
+        value: coded.value,
+        collapse: collapse,
+        wrapStart: wrapStart,
+        wrapEnd: wrapEnd,
+        missing: missing,
+      });
 
       return coded;
     });

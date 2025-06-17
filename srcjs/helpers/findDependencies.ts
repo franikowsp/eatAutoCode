@@ -1,4 +1,12 @@
-export default function findDependencies(data) {
+import { concatenateValueDefault } from "./concatenateValue";
+
+export default function findDependencies({
+  data,
+  collapse,
+  wrapStart,
+  wrapEnd,
+  missing,
+}) {
   return data.map((currentObj, _, arr) => {
     const connectedIds =
       currentObj.connectedTo || currentObj.markingPanels || [];
@@ -14,15 +22,13 @@ export default function findDependencies(data) {
     });
 
     if (currentObj.value) {
-      currentObj.value =
-        ["string", "number", "logical"].includes(typeof currentObj.value) ||
-        currentObj.value === null
-          ? currentObj.value
-          : currentObj.value.length === 0
-          ? null
-          : currentObj.value.length > 1
-          ? `[[${currentObj.value.map((value) => value.alias).join(",")}]]`
-          : currentObj.value.map((value) => value.alias);
+      currentObj.value = concatenateValueDefault({
+        value: currentObj.value,
+        collapse: collapse,
+        wrapStart: wrapStart,
+        wrapEnd: wrapEnd,
+        missing: missing,
+      });
     }
 
     return {

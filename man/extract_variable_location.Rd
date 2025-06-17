@@ -4,10 +4,24 @@
 \alias{extract_variable_location}
 \title{Extract variable locations from unit definition}
 \usage{
-extract_variable_location(units)
+extract_variable_location(
+  units,
+  collapse = ";;;",
+  wrap_start = "[[[",
+  wrap_end = "]]]",
+  missing = "___MISSING___"
+)
 }
 \arguments{
 \item{units}{Tibble. Must contain a column `definition` that contains unit definitions. Please note, that it is recommended to not extract more than 20 unit definitions at a time as the call is memory-consuming.}
+
+\item{collapse}{Character. List values will be concatenated with this character. Defaults to `";;;"`.}
+
+\item{wrap_start}{Character. List values will be wrapped with this character. Defaults to `"[[["`.}
+
+\item{wrap_end}{Character. List values will be wrapped with this character. Defaults to `"´]]]"`.}
+
+\item{missing}{Character. Placeholder for missing values. Will be transformed to `NA`. Defaults to `"___MISSING___"`.}
 }
 \value{
 A data frame.

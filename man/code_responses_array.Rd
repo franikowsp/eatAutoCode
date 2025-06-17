@@ -4,15 +4,30 @@
 \alias{code_responses_array}
 \title{Automatically code responses with coding scheme}
 \usage{
-code_responses_array(coding_scheme, responses)
+code_responses_array(
+  coding_scheme,
+  responses,
+  collapse = ";;;",
+  wrap_start = "[[[",
+  wrap_end = "]]]",
+  missing = "___MISSING___"
+)
 }
 \arguments{
 \item{coding_scheme}{List. Coding scheme of a unit from IQB Studio Lite.}
 
 \item{responses}{List. Unit responses from IQB Testcenter.}
+
+\item{collapse}{Character. List values will be concatenated with this character. Defaults to `";;;"`.}
+
+\item{wrap_start}{Character. List values will be wrapped with this character. Defaults to `"[[["`.}
+
+\item{wrap_end}{Character. List values will be wrapped with this character. Defaults to `"´]]]"`.}
+
+\item{missing}{Character. Placeholder for missing values. Will be transformed to `NA`. Defaults to `"___MISSING___"`.}
 }
 \value{
-A data frame. Please not that the value column is coerced to a character, i.e., list entries of `c("a", "b")` are concatenated to `[[a,b]]`.
+A data frame. Please not that the value column is coerced to a character, i.e., list entries of `c("a", "b")` are concatenated to `[[[a;;;b]]]`  (e.g., for drag-and-drop or from marker variables).
 }
 \description{
 Automatically code responses with coding scheme

@@ -15,6 +15,14 @@ test_that("correctly displays a nested dependency tree", {
   expect_equal(dependency_tree, comp_flat)
 })
 
+test_cs_string <- readr::read_file(test_path("code_responses/coding-scheme.json"))
+
+test_that("correctly works for string input", {
+  dependency_tree <- get_dependency_tree(coding_scheme = test_cs_string)
+
+  expect_equal(dependency_tree, comp_flat)
+})
+
 test_cs_nested2 <- jsonlite::read_json(test_path("get_dependency_tree/coding-scheme-level2.json"))
 
 comp_nested2 <- data.frame(
